@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Club Echelon · Noche Latina de Escuela</title>
+    <title>Club Echelon · Latin After-Party Model</title>
     <meta
       name="description"
-      content="Calculadora sencilla para que el dueño de Club Echelon vea el potencial de las noches latinas de miércoles, jueves y domingo."
+      content="Simple calculator to show the Club Echelon owner the financial potential of a late-night Latin after-party in Belgrade."
     />
     <style>
       * {
@@ -224,27 +224,30 @@
   <body>
     <main class="card">
       <section>
-        <h1>Escenario sencillo para las noches latinas del Club Echelon</h1>
+        <h1>Simple model for the Latin after-party at Club Echelon</h1>
         <p class="subtitle">
-          Esta calculadora le permite ver, en segundos, qué ocurre si cada escuela de
-          baile trae unos pocos alumnos a la <strong>segunda parte de la noche</strong>
-          (de 2:00 a 5:00). El coste fijo por noche es de <strong>800&nbsp;€</strong>.
+          This page is for you as the owner. In a few seconds you can see if a fixed
+          fee of <strong>€800</strong> for the Latin after-party makes sense, using
+          realistic numbers for how many people stay out after the dance-school parties
+          and how much they spend between 2:00 and 5:00.
         </p>
 
         <div class="pill-row">
           <div class="pill">
-            Miércoles · Jueves · <strong>Domingo</strong> &nbsp;·&nbsp; 2:00–5:00
+            Belgrade · Latin After-Party &nbsp;·&nbsp; 2:00–5:00
           </div>
-          <div class="pill">Espacio libre después de las fiestas de las escuelas</div>
+          <div class="pill">
+            After dance schools, birthdays, pools, movies – always the same place
+          </div>
         </div>
 
-        <h2 class="section-title">Mueva las barras para ver el resultado</h2>
+        <h2 class="section-title">Move the sliders to test the idea</h2>
 
         <div class="sliders">
           <div class="slider-group">
             <div class="slider-label-row">
-              <span>Número de escuelas que participan</span>
-              <span><span id="schoolsValue"></span> escuelas</span>
+              <span>Dance schools and groups sending people</span>
+              <span><span id="schoolsValue"></span> schools / groups</span>
             </div>
             <input
               id="schools"
@@ -258,8 +261,8 @@
 
           <div class="slider-group">
             <div class="slider-label-row">
-              <span>Personas por escuela que vienen a Echelon</span>
-              <span><span id="peoplePerSchoolValue"></span> personas/escuela</span>
+              <span>Average people per school or group</span>
+              <span><span id="peoplePerSchoolValue"></span> people / school</span>
             </div>
             <input
               id="peoplePerSchool"
@@ -273,8 +276,8 @@
 
           <div class="slider-group">
             <div class="slider-label-row">
-              <span>Consumo medio por persona en el club</span>
-              <span><span id="spendPerPersonValue"></span> €/persona</span>
+              <span>Average spend per person in the club</span>
+              <span><span id="spendPerPersonValue"></span> €/person</span>
             </div>
             <input
               id="spendPerPerson"
@@ -288,63 +291,65 @@
         </div>
 
         <p class="helper-text">
-          Ejemplo: si de cada escuela solo vienen
-          <span class="emphasis">5&nbsp;personas</span> y cada una consume
-          <span class="emphasis">20&nbsp;€</span>, ya está muy cerca de cubrir el coste
-          fijo de <strong>800&nbsp;€</strong> solo con la segunda parte de la noche.
+          For example, if four dance schools and friend groups send only
+          <span class="emphasis">3–4 people each</span>, and each person spends
+          <span class="emphasis">€20</span>, you already see how quickly the
+          after-party moves towards and then beyond the <strong>€800</strong> fee – on
+          top of the rest of the club’s revenue.
         </p>
       </section>
 
       <section class="right">
         <div class="row small">
-          <span>Personas totales por noche (2:00–5:00)</span>
+          <span>Total people per night (2:00–5:00)</span>
           <span id="totalPeople"></span>
         </div>
 
         <div class="row">
-          <span>Ingresos estimados por noche</span>
+          <span>Estimated spend per night</span>
           <span id="revenuePerNight"></span>
         </div>
 
+        <div class="row small">
+          <span>Latin after-party nights per week</span>
+          <span>3 nights (Wed · Thu · Sun)</span>
+        </div>
+
         <div class="row">
-          <span>Coste fijo por noche</span>
-          <span>800&nbsp;€</span>
+          <span>Estimated weekly revenue from the after-party</span>
+          <span id="revenuePerWeek"></span>
         </div>
 
         <div class="divider"></div>
 
         <div class="row">
-          <span>Resultado por noche (solo segunda parte)</span>
-          <span id="profitPerNight" class="profit-positive"></span>
-        </div>
-
-        <div class="row small">
-          <span>Noches latinas por semana</span>
-          <span>3 noches (mié · jue · dom)</span>
+          <span>Fixed fee for the concept (per week)</span>
+          <span>€800</span>
         </div>
 
         <div class="row">
-          <span>Resultado semanal estimado</span>
-          <span id="profitPerWeek"></span>
+          <span>Result per week vs €800 fee</span>
+          <span id="profitPerWeek" class="profit-positive"></span>
         </div>
 
         <p class="note">
-          <strong>Idea clave para usted como dueño:</strong> no se trata de llenar el
-          club con 200 personas nuevas, sino de aprovechar el hueco que dejan las
-          escuelas. Si cada escuela envía solo unos pocos alumnos, la
-          <strong>segunda parte de la noche</strong> puede pagar el coste fijo e incluso
-          generar beneficio adicional.
+          <strong>Key idea for you as the owner:</strong> people do not fall in love with
+          a DJ name, they fall in love with a <strong>habit and a place</strong>. The
+          Latin after-party gives Belgrade dancers and friends one clear option every
+          time the regular party ends: “after 2:00, we go to Echelon”.
         </p>
 
         <p class="tagline">
-          Esta página está pensada para que pueda
-          <strong>probar números en segundos</strong> y ver si el escenario le compensa.
+          This page is designed so you can
+          <strong>play with a few numbers</strong> and quickly see how many people and
+          how much spend per person you need for the concept to be clearly profitable.
         </p>
       </section>
     </main>
 
     <script>
-      const costPerNight = 800;
+      const fixedFeePerWeek = 800;
+      const nightsPerWeek = 3;
       const schoolsEl = document.getElementById("schools");
       const peoplePerSchoolEl = document.getElementById("peoplePerSchool");
       const spendPerPersonEl = document.getElementById("spendPerPerson");
@@ -359,7 +364,7 @@
       const profitPerWeekEl = document.getElementById("profitPerWeek");
 
       function formatEuros(value) {
-        return value.toLocaleString("es-ES", {
+        return value.toLocaleString("en-GB", {
           style: "currency",
           currency: "EUR",
           maximumFractionDigits: 0,
@@ -377,17 +382,16 @@
 
         const totalPeople = schools * peoplePerSchool;
         const revenuePerNight = totalPeople * spendPerPerson;
-        const profitPerNight = revenuePerNight - costPerNight;
-        const profitPerWeek = profitPerNight * 3;
+        const revenuePerWeek = revenuePerNight * nightsPerWeek;
+        const profitPerWeek = revenuePerWeek - fixedFeePerWeek;
 
-        totalPeopleEl.textContent = totalPeople.toString() + " personas";
+        totalPeopleEl.textContent = totalPeople.toString() + " people";
         revenuePerNightEl.textContent = formatEuros(revenuePerNight);
 
-        profitPerNightEl.textContent = formatEuros(profitPerNight);
-        profitPerNightEl.className =
-          profitPerNight >= 0 ? "profit-positive" : "profit-negative";
-
+        profitPerNightEl.textContent = "";
         profitPerWeekEl.textContent = formatEuros(profitPerWeek);
+        profitPerWeekEl.className =
+          profitPerWeek >= 0 ? "profit-positive" : "profit-negative";
       }
 
       schoolsEl.addEventListener("input", update);
