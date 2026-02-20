@@ -3,12 +3,24 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Club Echelon · Latin After-Party Model</title>
+    <title>Latin After Party Revenue Simulator · Club Echelon</title>
     <meta
       name="description"
-      content="Simple calculator to show the Club Echelon owner the financial potential of a late-night Latin after-party in Belgrade."
+      content="Visual decision tool showing how a Latin After Party concept at Club Echelon in Belgrade can justify an €800 monthly investment."
     />
     <style>
+      :root {
+        --bg: #020617;
+        --bg-elevated: #020617;
+        --accent: #f97373;
+        --accent-soft: rgba(248, 113, 113, 0.16);
+        --money: #facc6b;
+        --text: #f9fafb;
+        --muted: #9ca3af;
+        --border-subtle: rgba(148, 163, 184, 0.35);
+        --border-strong: rgba(148, 163, 184, 0.7);
+      }
+
       * {
         box-sizing: border-box;
         margin: 0;
@@ -16,354 +28,536 @@
       }
 
       body {
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-          "Inter", sans-serif;
-        background: #020617;
-        color: #e5e7eb;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Inter",
+          "SF Pro Text", sans-serif;
+        background: radial-gradient(circle at top, #020617 0, #020617 55%, #000 100%);
+        color: var(--text);
         min-height: 100vh;
-        display: flex;
-        justify-content: center;
-        padding: 24px 16px;
         -webkit-font-smoothing: antialiased;
       }
 
-      .card {
-        width: 100%;
-        max-width: 960px;
-        background: #020617;
-        border-radius: 18px;
-        border: 1px solid rgba(148, 163, 184, 0.6);
-        box-shadow:
-          0 24px 60px rgba(15, 23, 42, 0.95),
-          0 0 0 1px rgba(15, 23, 42, 1);
-        padding: 20px 20px 18px;
-        display: grid;
-        grid-template-columns: 1.3fr 1fr;
-        gap: 20px;
+      .page {
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: 32px 20px 40px;
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
       }
 
-      @media (max-width: 820px) {
-        body {
-          padding: 16px 8px;
+      @media (max-width: 768px) {
+        .page {
+          padding-inline: 16px;
+          gap: 32px;
         }
+      }
 
-        .card {
-          grid-template-columns: 1fr;
-          padding: 18px 16px 16px;
-          border-radius: 14px;
+      section {
+        border-radius: 20px;
+        border: 1px solid var(--border-subtle);
+        background: radial-gradient(
+            circle at top left,
+            rgba(248, 113, 113, 0.16),
+            transparent 60%
+          ),
+          radial-gradient(circle at bottom right, rgba(250, 204, 21, 0.12), transparent 55%),
+          rgba(15, 23, 42, 0.96);
+        padding: 24px 24px 22px;
+      }
+
+      @media (max-width: 768px) {
+        section {
+          padding: 20px 18px 18px;
+          border-radius: 16px;
         }
       }
 
       h1 {
+        font-size: clamp(2.25rem, 3vw, 2.6rem);
+        letter-spacing: -0.04em;
+        margin-bottom: 8px;
+      }
+
+      h2 {
         font-size: 1.4rem;
-        margin-bottom: 4px;
         letter-spacing: -0.03em;
+        margin-bottom: 6px;
       }
 
-      .subtitle {
-        font-size: 0.88rem;
-        color: #9ca3af;
-        line-height: 1.5;
-        margin-bottom: 14px;
+      h3 {
+        font-size: 1.2rem;
+        letter-spacing: -0.02em;
+        margin-bottom: 4px;
       }
 
-      .pill-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 6px;
-        margin-bottom: 16px;
+      p,
+      li {
+        font-size: 1.125rem;
+        line-height: 1.6;
       }
 
-      .pill {
-        font-size: 0.7rem;
-        text-transform: uppercase;
-        letter-spacing: 0.14em;
-        border-radius: 999px;
-        border: 1px solid rgba(148, 163, 184, 0.7);
-        padding: 4px 10px;
-        color: #e5e7eb;
-        background: rgba(15, 23, 42, 0.9);
-      }
-
-      .pill strong {
-        color: #f97316;
-      }
-
-      .section-title {
-        font-size: 0.78rem;
+      .eyebrow {
+        font-size: 0.9rem;
         text-transform: uppercase;
         letter-spacing: 0.16em;
-        color: #9ca3af;
+        color: var(--muted);
         margin-bottom: 10px;
       }
 
-      .sliders {
+      .accent {
+        color: var(--accent);
+      }
+
+      .money {
+        color: var(--money);
+      }
+
+      .muted {
+        color: var(--muted);
+      }
+
+      .hero-layout {
         display: flex;
-        flex-direction: column;
-        gap: 14px;
-        margin-bottom: 12px;
+        gap: 28px;
+        align-items: flex-start;
+      }
+
+      .hero-main {
+        flex: 1.6;
+      }
+
+      .hero-side {
+        flex: 1.2;
+        border-radius: 16px;
+        border: 1px solid var(--border-subtle);
+        background: radial-gradient(
+            circle at top right,
+            rgba(248, 113, 113, 0.18),
+            transparent 55%
+          ),
+          rgba(10, 16, 32, 0.98);
+        padding: 16px 16px 14px;
+      }
+
+      @media (max-width: 900px) {
+        .hero-layout {
+          flex-direction: column;
+        }
+      }
+
+      .hero-subtitle {
+        font-size: 1.125rem;
+        color: var(--muted);
+        max-width: 32rem;
+        margin-bottom: 14px;
+      }
+
+      .hero-side-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin-bottom: 6px;
+      }
+
+      .hero-side-kpi {
+        font-size: 1.4rem;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .hero-tag {
+        font-size: 0.95rem;
+        color: var(--muted);
+        margin-top: 6px;
+      }
+
+      .simulator-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.1fr);
+        gap: 32px;
+        align-items: flex-start;
+      }
+
+      @media (max-width: 900px) {
+        .simulator-grid {
+          grid-template-columns: minmax(0, 1fr);
+          gap: 24px;
+        }
       }
 
       .slider-group {
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
+        margin-bottom: 20px;
       }
 
       .slider-label-row {
         display: flex;
         justify-content: space-between;
         align-items: baseline;
-        font-size: 0.84rem;
+        margin-bottom: 6px;
       }
 
-      .slider-label-row span:last-child {
-        color: #9ca3af;
+      .label-main {
+        font-weight: 500;
+      }
+
+      .label-value {
+        color: var(--muted);
+        font-variant-numeric: tabular-nums;
       }
 
       input[type="range"] {
         width: 100%;
         -webkit-appearance: none;
         appearance: none;
-        height: 6px;
+        height: 8px;
         border-radius: 999px;
         background: #020617;
-        border: 1px solid rgba(148, 163, 184, 0.55);
+        border: 1px solid var(--border-strong);
       }
 
       input[type="range"]::-webkit-slider-thumb {
         -webkit-appearance: none;
         appearance: none;
-        width: 16px;
-        height: 16px;
+        width: 22px;
+        height: 22px;
         border-radius: 50%;
-        border: 2px solid #0f172a;
-        background: linear-gradient(135deg, #f97316, #f97316);
-        box-shadow: 0 0 0 3px rgba(251, 146, 60, 0.35);
+        border: 2px solid #020617;
+        background: radial-gradient(circle at 30% 20%, #fee2e2, #f97373);
+        box-shadow:
+          0 0 0 4px rgba(248, 113, 113, 0.35),
+          0 10px 20px rgba(0, 0, 0, 0.7);
         cursor: pointer;
       }
 
       input[type="range"]::-moz-range-thumb {
-        width: 16px;
-        height: 16px;
+        width: 22px;
+        height: 22px;
         border-radius: 50%;
-        border: 2px solid #0f172a;
-        background: linear-gradient(135deg, #f97316, #f97316);
-        box-shadow: 0 0 0 3px rgba(251, 146, 60, 0.35);
+        border: 2px solid #020617;
+        background: radial-gradient(circle at 30% 20%, #fee2e2, #f97373);
+        box-shadow:
+          0 0 0 4px rgba(248, 113, 113, 0.35),
+          0 10px 20px rgba(0, 0, 0, 0.7);
         cursor: pointer;
       }
 
-      .helper-text {
-        font-size: 0.8rem;
-        color: #9ca3af;
-        line-height: 1.4;
+      .sim-helper {
+        font-size: 1.05rem;
+        color: var(--muted);
+        max-width: 30rem;
       }
 
-      .emphasis {
-        color: #facc15;
-        font-weight: 500;
+      .sim-helper strong {
+        color: var(--text);
       }
 
-      .right {
-        border-radius: 14px;
-        border: 1px solid rgba(148, 163, 184, 0.6);
-        padding: 12px 12px 10px;
-        background: radial-gradient(circle at 0 0, rgba(248, 250, 252, 0.08), transparent 60%),
-          #020617;
+      .results-card {
+        border-radius: 16px;
+        border: 1px solid var(--border-strong);
+        background: radial-gradient(
+            circle at top,
+            rgba(248, 113, 113, 0.22),
+            transparent 55%
+          ),
+          rgba(3, 7, 18, 0.98);
+        padding: 16px 18px 14px;
         display: flex;
         flex-direction: column;
         gap: 10px;
       }
 
-      .row {
+      .result-row {
         display: flex;
         justify-content: space-between;
         align-items: baseline;
-        font-size: 0.9rem;
       }
 
-      .row span:last-child {
+      .result-label {
+        font-size: 1rem;
+        color: var(--muted);
+      }
+
+      .result-value {
+        font-size: 1.6rem;
+        font-weight: 600;
         font-variant-numeric: tabular-nums;
       }
 
-      .row.small {
-        font-size: 0.8rem;
-        color: #9ca3af;
+      .result-value.large {
+        font-size: 2rem;
       }
 
       .divider {
         border-top: 1px solid rgba(31, 41, 55, 1);
-        margin: 4px 0 6px;
+        margin: 6px 0 4px;
       }
 
-      .profit-positive {
+      .percent {
+        font-size: 1.2rem;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .percent.good {
         color: #4ade80;
       }
 
-      .profit-negative {
+      .percent.bad {
         color: #f97373;
       }
 
-      .note {
-        font-size: 0.78rem;
-        color: #9ca3af;
-        line-height: 1.4;
+      .comparison-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 24px;
       }
 
-      .note strong {
-        color: #e5e7eb;
+      @media (max-width: 800px) {
+        .comparison-grid {
+          grid-template-columns: minmax(0, 1fr);
+        }
       }
 
-      .tagline {
-        font-size: 0.8rem;
-        color: #9ca3af;
-        margin-top: 4px;
+      .comparison-card {
+        border-radius: 16px;
+        border: 1px solid var(--border-subtle);
+        padding: 16px 16px 14px;
+        background: rgba(3, 7, 18, 0.96);
+      }
+
+      .comparison-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 6px;
+      }
+
+      .bullet-list {
+        list-style: none;
+        margin-top: 6px;
+      }
+
+      .bullet-list li {
+        margin-bottom: 4px;
+      }
+
+      .bullet-list li::before {
+        content: "–";
+        color: var(--muted);
+        margin-right: 8px;
+      }
+
+      .closing-big {
+        font-size: 1.6rem;
+        font-weight: 600;
+        letter-spacing: -0.03em;
+        margin-bottom: 10px;
+      }
+
+      .closing-sub {
+        font-size: 1.25rem;
       }
     </style>
   </head>
   <body>
-    <main class="card">
-      <section>
-        <h1>Simple model for the Latin after-party at Club Echelon</h1>
-        <p class="subtitle">
-          This page is for you as the owner. In a few seconds you can see if a fixed
-          fee of <strong>€800</strong> for the Latin after-party makes sense, using
-          realistic numbers for how many people stay out after the dance-school parties
-          and how much they spend between 2:00 and 5:00.
+    <div class="page">
+      <!-- SECTION 1 – Hero -->
+      <section id="hero">
+        <div class="eyebrow">Latin After Party · Owner Decision Tool</div>
+        <div class="hero-layout">
+          <div class="hero-main">
+            <h1>Latin After Party Revenue Simulator</h1>
+            <p class="hero-subtitle">
+              How small increases after 2&nbsp;AM can turn a
+              <span class="money">€800 monthly investment</span> into
+              <span class="money">€3,000+ of additional revenue</span>.
+            </p>
+            <p>
+              People don’t follow <span class="accent">DJs</span>, they follow
+              <strong>concepts</strong>. When Belgrade knows there is a Latin after party
+              until 5&nbsp;AM, Club Echelon becomes the automatic destination after dance
+              schools, birthdays, bars, pools and dinners.
+            </p>
+          </div>
+          <aside class="hero-side">
+            <div class="hero-side-row">
+              <span class="muted">Target:</span>
+              <span class="hero-side-kpi money">€3,000+</span>
+            </div>
+            <div class="hero-side-row">
+              <span class="muted">Owner investment (per month)</span>
+              <span class="hero-side-kpi">€800</span>
+            </div>
+            <p class="hero-tag">
+              The only question: <strong>do a few real people after 2&nbsp;AM justify
+              this?</strong> Use the simulator below to test realistic scenarios.
+            </p>
+          </aside>
+        </div>
+      </section>
+
+      <!-- SECTION 2 – Interactive Revenue Simulator -->
+      <section id="simulator">
+        <h2>Interactive Revenue Simulator</h2>
+        <p class="muted" style="margin-bottom: 18px">
+          Assume Latin nights on <strong>Wednesday, Thursday and Sunday</strong> – three
+          nights per week, four weeks per month (<strong>12 nights</strong> total).
         </p>
 
-        <div class="pill-row">
-          <div class="pill">
-            Belgrade · Latin After-Party &nbsp;·&nbsp; 2:00–5:00
+        <div class="simulator-grid">
+          <div>
+            <div class="slider-group">
+              <div class="slider-label-row">
+                <span class="label-main">Additional people staying after 2&nbsp;AM</span>
+                <span class="label-value">
+                  <span id="peopleValue"></span> people per night
+                </span>
+              </div>
+              <input
+                id="peopleSlider"
+                type="range"
+                min="0"
+                max="40"
+                step="1"
+                value="12"
+              />
+            </div>
+
+            <div class="slider-group">
+              <div class="slider-label-row">
+                <span class="label-main">Average spending per person (in €)</span>
+                <span class="label-value">
+                  <span id="spendValue"></span> per person
+                </span>
+              </div>
+              <input
+                id="spendSlider"
+                type="range"
+                min="8"
+                max="45"
+                step="1"
+                value="22"
+              />
+            </div>
+
+            <p class="sim-helper">
+              With just <strong>12 real people</strong> staying after 2&nbsp;AM and
+              spending around <strong>€22 each</strong>, the Latin after party already
+              starts to look like a serious,
+              <strong>recurring revenue stream</strong> – not a gamble.
+            </p>
           </div>
-          <div class="pill">
-            After dance schools, birthdays, pools, movies – always the same place
+
+          <div class="results-card">
+            <div class="result-row">
+              <span class="result-label">Revenue per night after 2&nbsp;AM</span>
+              <span class="result-value" id="perNightDisplay"></span>
+            </div>
+
+            <div class="result-row">
+              <span class="result-label">Nights per month (Wed · Thu · Sun)</span>
+              <span class="result-value">12</span>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="result-row">
+              <span class="result-label">Estimated monthly revenue</span>
+              <span class="result-value large money" id="perMonthDisplay"></span>
+            </div>
+
+            <div class="divider"></div>
+
+            <p style="font-size: 1.05rem">
+              If this generates
+              <strong id="perMonthInline"></strong>
+              per month, an investment of <strong>€800</strong> represents only
+              <span class="percent" id="percentInline"></span>
+              of that additional revenue.
+            </p>
           </div>
         </div>
+      </section>
 
-        <h2 class="section-title">Move the sliders to test the idea</h2>
+      <!-- SECTION 3 – Concept vs Random DJ Strategy -->
+      <section id="comparison">
+        <h2>Concept vs. Random DJ Strategy</h2>
+        <p class="muted" style="margin-bottom: 16px">
+          The numbers matter, but the <strong>positioning</strong> behind them matters
+          even more.
+        </p>
 
-        <div class="sliders">
-          <div class="slider-group">
-            <div class="slider-label-row">
-              <span>Dance schools and groups sending people</span>
-              <span><span id="schoolsValue"></span> schools / groups</span>
-            </div>
-            <input
-              id="schools"
-              type="range"
-              min="2"
-              max="10"
-              step="1"
-              value="4"
-            />
+        <div class="comparison-grid">
+          <div class="comparison-card">
+            <div class="comparison-title">Random DJ Rotation</div>
+            <ul class="bullet-list">
+              <li>No clear identity or promise.</li>
+              <li>People come “if they remember” – no habit formation.</li>
+              <li>The same small group repeats; hard to grow beyond it.</li>
+              <li>Bar turnover is unpredictable and often low after 2&nbsp;AM.</li>
+            </ul>
           </div>
 
-          <div class="slider-group">
-            <div class="slider-label-row">
-              <span>Average people per school or group</span>
-              <span><span id="peoplePerSchoolValue"></span> people / school</span>
-            </div>
-            <input
-              id="peoplePerSchool"
-              type="range"
-              min="3"
-              max="15"
-              step="1"
-              value="5"
-            />
-          </div>
-
-          <div class="slider-group">
-            <div class="slider-label-row">
-              <span>Average spend per person in the club</span>
-              <span><span id="spendPerPersonValue"></span> €/person</span>
-            </div>
-            <input
-              id="spendPerPerson"
-              type="range"
-              min="10"
-              max="40"
-              step="1"
-              value="20"
-            />
+          <div class="comparison-card">
+            <div class="comparison-title accent">Latin After Party Concept</div>
+            <ul class="bullet-list">
+              <li>Predictable weekly culture – people know it <strong>always</strong> runs.</li>
+              <li>Clear post–event destination after schools, birthdays and bars.</li>
+              <li>Attractive story for tourists and visitors: “the Latin after party in Belgrade”.</li>
+              <li>Encourages guests to stay longer and consume more after 2&nbsp;AM.</li>
+            </ul>
           </div>
         </div>
+      </section>
 
-        <p class="helper-text">
-          For example, if four dance schools and friend groups send only
-          <span class="emphasis">3–4 people each</span>, and each person spends
-          <span class="emphasis">€20</span>, you already see how quickly the
-          after-party moves towards and then beyond the <strong>€800</strong> fee – on
-          top of the rest of the club’s revenue.
+      <!-- SECTION 4 – Psychology Explanation -->
+      <section id="psychology">
+        <h2>Why this works in practice</h2>
+        <p>
+          Humans follow <strong>patterns</strong>, and cities follow
+          <strong>habits</strong>. When people finish weddings, Latin school parties,
+          birthdays, cinema or a bar, they look for a
+          <strong>known, easy decision</strong>. “Let’s see what’s next at Echelon” is a
+          much easier decision than “Where do we go now?”.
+        </p>
+        <p style="margin-top: 10px">
+          The word <strong>“After Party”</strong> becomes a psychological anchor: a
+          reliable, late–night option that removes doubt and keeps people in the
+          building when most venues are already closing.
         </p>
       </section>
 
-      <section class="right">
-        <div class="row small">
-          <span>Total people per night (2:00–5:00)</span>
-          <span id="totalPeople"></span>
-        </div>
-
-        <div class="row">
-          <span>Estimated spend per night</span>
-          <span id="revenuePerNight"></span>
-        </div>
-
-        <div class="row small">
-          <span>Latin after-party nights per week</span>
-          <span>3 nights (Wed · Thu · Sun)</span>
-        </div>
-
-        <div class="row">
-          <span>Estimated weekly revenue from the after-party</span>
-          <span id="revenuePerWeek"></span>
-        </div>
-
-        <div class="divider"></div>
-
-        <div class="row">
-          <span>Fixed fee for the concept (per week)</span>
-          <span>€800</span>
-        </div>
-
-        <div class="row">
-          <span>Result per week vs €800 fee</span>
-          <span id="profitPerWeek" class="profit-positive"></span>
-        </div>
-
-        <p class="note">
-          <strong>Key idea for you as the owner:</strong> people do not fall in love with
-          a DJ name, they fall in love with a <strong>habit and a place</strong>. The
-          Latin after-party gives Belgrade dancers and friends one clear option every
-          time the regular party ends: “after 2:00, we go to Echelon”.
+      <!-- SECTION 5 – Closing Statement -->
+      <section id="closing">
+        <p class="closing-big">
+          This is not about filling the club.<br />
+          It’s about <span class="money">increasing revenue after 2&nbsp;AM</span>.
         </p>
-
-        <p class="tagline">
-          This page is designed so you can
-          <strong>play with a few numbers</strong> and quickly see how many people and
-          how much spend per person you need for the concept to be clearly profitable.
+        <p class="closing-sub">
+          Even <strong>+12 real people per night</strong> – staying, drinking and
+          dancing until 5&nbsp;AM – can generate over
+          <span class="money">€3,000 monthly</span> in additional turnover when the
+          concept is consistent.
         </p>
       </section>
-    </main>
+    </div>
 
     <script>
-      const fixedFeePerWeek = 800;
-      const nightsPerWeek = 3;
-      const schoolsEl = document.getElementById("schools");
-      const peoplePerSchoolEl = document.getElementById("peoplePerSchool");
-      const spendPerPersonEl = document.getElementById("spendPerPerson");
+      const MONTHLY_NIGHTS = 12;
+      const INVESTMENT = 800;
 
-      const schoolsValueEl = document.getElementById("schoolsValue");
-      const peoplePerSchoolValueEl = document.getElementById("peoplePerSchoolValue");
-      const spendPerPersonValueEl = document.getElementById("spendPerPersonValue");
+      const peopleSlider = document.getElementById("peopleSlider");
+      const spendSlider = document.getElementById("spendSlider");
+      const peopleValue = document.getElementById("peopleValue");
+      const spendValue = document.getElementById("spendValue");
 
-      const totalPeopleEl = document.getElementById("totalPeople");
-      const revenuePerNightEl = document.getElementById("revenuePerNight");
-      const profitPerNightEl = document.getElementById("profitPerNight");
-      const profitPerWeekEl = document.getElementById("profitPerWeek");
+      const perNightDisplay = document.getElementById("perNightDisplay");
+      const perMonthDisplay = document.getElementById("perMonthDisplay");
+      const perMonthInline = document.getElementById("perMonthInline");
+      const percentInline = document.getElementById("percentInline");
 
-      function formatEuros(value) {
+      let currentPerNight = 0;
+      let currentPerMonth = 0;
+      let currentPercent = 0;
+
+      function formatCurrency(value) {
         return value.toLocaleString("en-GB", {
           style: "currency",
           currency: "EUR",
@@ -371,32 +565,71 @@
         });
       }
 
-      function update() {
-        const schools = Number(schoolsEl.value);
-        const peoplePerSchool = Number(peoplePerSchoolEl.value);
-        const spendPerPerson = Number(spendPerPersonEl.value);
-
-        schoolsValueEl.textContent = schools.toString();
-        peoplePerSchoolValueEl.textContent = peoplePerSchool.toString();
-        spendPerPersonValueEl.textContent = spendPerPerson.toString();
-
-        const totalPeople = schools * peoplePerSchool;
-        const revenuePerNight = totalPeople * spendPerPerson;
-        const revenuePerWeek = revenuePerNight * nightsPerWeek;
-        const profitPerWeek = revenuePerWeek - fixedFeePerWeek;
-
-        totalPeopleEl.textContent = totalPeople.toString() + " people";
-        revenuePerNightEl.textContent = formatEuros(revenuePerNight);
-
-        profitPerNightEl.textContent = "";
-        profitPerWeekEl.textContent = formatEuros(profitPerWeek);
-        profitPerWeekEl.className =
-          profitPerWeek >= 0 ? "profit-positive" : "profit-negative";
+      function animateNumber(el, from, to, formatter, duration = 260) {
+        if (from === to) {
+          el.textContent = formatter ? formatter(to) : String(to);
+          return;
+        }
+        const start = performance.now();
+        function frame(now) {
+          const elapsed = now - start;
+          const t = Math.min(1, elapsed / duration);
+          const eased = 1 - Math.pow(1 - t, 3);
+          const value = from + (to - from) * eased;
+          el.textContent = formatter ? formatter(value) : String(Math.round(value));
+          if (t < 1) requestAnimationFrame(frame);
+        }
+        requestAnimationFrame(frame);
       }
 
-      schoolsEl.addEventListener("input", update);
-      peoplePerSchoolEl.addEventListener("input", update);
-      spendPerPersonEl.addEventListener("input", update);
+      function update() {
+        const people = Number(peopleSlider.value);
+        const spend = Number(spendSlider.value);
+
+        peopleValue.textContent = people.toString();
+        spendValue.textContent = formatCurrency(spend).trim();
+
+        const perNight = people * spend;
+        const perMonth = perNight * MONTHLY_NIGHTS;
+        const percent = perMonth > 0 ? (INVESTMENT / perMonth) * 100 : 0;
+
+        animateNumber(
+          perNightDisplay,
+          currentPerNight,
+          perNight,
+          (v) => formatCurrency(Math.round(v))
+        );
+        animateNumber(
+          perMonthDisplay,
+          currentPerMonth,
+          perMonth,
+          (v) => formatCurrency(Math.round(v))
+        );
+        animateNumber(
+          perMonthInline,
+          currentPerMonth,
+          perMonth,
+          (v) => formatCurrency(Math.round(v))
+        );
+        animateNumber(
+          percentInline,
+          currentPercent,
+          percent,
+          (v) => `${v.toFixed(1)}%`
+        );
+
+        percentInline.classList.remove("good", "bad");
+        if (perMonth > 0) {
+          percentInline.classList.add(percent <= 30 ? "good" : "bad");
+        }
+
+        currentPerNight = perNight;
+        currentPerMonth = perMonth;
+        currentPercent = percent;
+      }
+
+      peopleSlider.addEventListener("input", update);
+      spendSlider.addEventListener("input", update);
 
       update();
     </script>
