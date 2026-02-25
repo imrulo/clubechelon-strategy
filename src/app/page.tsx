@@ -207,7 +207,7 @@ export default function Home() {
                                         <YAxis stroke="#94a3b8" tickFormatter={(v) => `€${v / 1000}k`} />
                                         <Tooltip
                                             contentStyle={{ backgroundColor: '#0f172a', border: '1px solid #ffffff10', borderRadius: '12px' }}
-                                            formatter={(v: number) => [formatCurrency(v), "Revenue"]}
+                                            formatter={(v: any) => [formatCurrency(Number(v) || 0), "Revenue"]}
                                         />
                                         <Line
                                             type="monotone"
@@ -298,8 +298,8 @@ function StrategyButton({ label, boost, active, icon: Icon, onClick }: any) {
         <button
             onClick={onClick}
             className={`flex items-center gap-3 p-4 rounded-2xl border transition-all duration-300 text-left ${active
-                    ? 'bg-accent/10 border-accent/50 text-accent shadow-lg shadow-accent/5'
-                    : 'bg-white/5 border-white/10 text-slate-400 hover:border-white/20'
+                ? 'bg-accent/10 border-accent/50 text-accent shadow-lg shadow-accent/5'
+                : 'bg-white/5 border-white/10 text-slate-400 hover:border-white/20'
                 }`}
         >
             <div className={`p-2 rounded-xl transition-colors ${active ? 'bg-accent text-white' : 'bg-slate-800'}`}>
@@ -318,8 +318,8 @@ function KPICard({ label, value, highlight }: any) {
         <motion.div
             whileHover={{ y: -5 }}
             className={`p-6 rounded-3xl border ${highlight
-                    ? 'bg-accent/5 border-accent/20 ring-1 ring-accent/10'
-                    : 'bg-white/5 border-white/10 hover:border-white/20'
+                ? 'bg-accent/5 border-accent/20 ring-1 ring-accent/10'
+                : 'bg-white/5 border-white/10 hover:border-white/20'
                 } transition-colors duration-300`}
         >
             <div className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-2">{label}</div>
